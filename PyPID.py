@@ -25,6 +25,10 @@ class PropDer:
         self._current_cter = self._current_cte - self._last_cte
         self._output = cte * self._P_GAIN + self._current_cter * self._D_GAIN
 
+    def reset(self):
+        self._last_cte = 0
+        self._current_cte = 0
+
     @property
     def output(self):
         return self._output
@@ -56,8 +60,10 @@ class PropIntDer:
         if self._index == self._cte_list_size: self._index = 0
         self._output = cte * self._P_GAIN + self._current_cter * self._D_GAIN + self._current_sse * self._I_GAIN
 
-    def reset_integral(self):
-        self._cte_list = [0.0]*self._cte_list_size
+    def reset(self):
+        for cte in self._cte_list: cte = 0
+        self._current_cte = 0
+        self._last_cte = 0
         self._index = 0
 
     @property
